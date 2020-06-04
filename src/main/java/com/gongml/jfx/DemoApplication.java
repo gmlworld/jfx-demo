@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Reflection;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -34,18 +35,18 @@ public class DemoApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX 2 Login");
+        primaryStage.setTitle("点餐系统 Login");
 
         BorderPane bp = new BorderPane();
-        bp.setPadding(new Insets(10,50,50,50));
+        bp.setPadding(new Insets(10, 50, 50, 50));
 
         //Adding HBox
         HBox hb = new HBox();
-        hb.setPadding(new Insets(20,20,20,30));
+        hb.setPadding(new Insets(20, 20, 20, 30));
 
         //Adding GridPane
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(20,20,20,20));
+        gridPane.setPadding(new Insets(20, 20, 20, 20));
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
@@ -56,6 +57,7 @@ public class DemoApplication extends Application {
         final PasswordField pf = new PasswordField();
         Button btnLogin = new Button("Login");
         final Label lblMessage = new Label();
+
 
         //Adding Nodes to GridPane layout
         gridPane.add(lblUserName, 0, 0);
@@ -76,8 +78,8 @@ public class DemoApplication extends Application {
         dropShadow.setOffsetY(5);
 
         //Adding text and DropShadow effect to it
-        Text text = new Text("JavaFX 2 Login");
-        text.setFont(Font.font ("Verdana", 30));
+        Text text = new Text("点餐系统 Login");
+        text.setFont(Font.font("Verdana", 30));
         text.setEffect(dropShadow);
 
         //Adding text to HBox
@@ -89,26 +91,37 @@ public class DemoApplication extends Application {
         btnLogin.setId("btnLogin");
         text.setId("text");
 
+        txtUserName.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER && !"".equals(txtUserName.getText())) {
+                pf.requestFocus();
+            }
+        });
+        pf.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                btnLogin.fire();
+            }
+        });
+
         //Action for btnLogin
         btnLogin.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 checkUser = txtUserName.getText().toString();
                 checkPw = pf.getText().toString();
-                if(checkUser.equals(user) && checkPw.equals(pw)){
+                if (checkUser.equals(user) && checkPw.equals(pw)) {
                     lblMessage.setText("Congratulations!");
                     lblMessage.setTextFill(Color.GREEN);
                     txtUserName.setText("");
                     pf.setText("");
+//                    new Stage();
                     primaryStage.close();
-                    WelcomeMain we=new WelcomeMain();//新窗口类
-                    Stage stage=new Stage();
+                    WelcomeMain we = new WelcomeMain();//新窗口类
+                    Stage stage = new Stage();
                     try {
                         we.start(stage);//打开新窗口
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     lblMessage.setText("Incorrect user or pw.");
                     lblMessage.setTextFill(Color.RED);
                     txtUserName.setText("");
