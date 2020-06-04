@@ -1,11 +1,33 @@
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+
 plugins {
     id 'java'
 }
+
+apply plugin: 'javafx-gradle-plugin'
 
 group 'com.gongml'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
@@ -16,3 +38,29 @@ dependencies {
     compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+
+jar {
+    manifest {
+        attributes(
+                "Manifest-Version": 1.0,
+                "Main-Class": "com.gongml.jfx.DemoApplication")
+    }
+    //jfxjar 需要屏蔽
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    into('assets') {
+        from 'assets'
+    }
+}
+
+jfx {
+    appName = "APP NAME"
+    // 启动类
+    mainClass = 'com.gongml.jfx.DemoApplication'
+    // 公司名称
+    vendor = 'gongml'
+//    // 启动画面
+//    preLoader = 'xxx.xxx.XxxSplashScreen'
+}
+
+test.enabled = false

@@ -57,7 +57,7 @@
       </MenuBar>
       <HBox VBox.vgrow="ALWAYS">
          <children>
-            <TabPane minHeight="-1.0" minWidth="-1.0" prefHeight="100.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+            <TabPane minHeight="-1.0" minWidth="-1.0" prefHeight="100.0" prefWidth="200.0"  HBox.hgrow="ALWAYS">
                <tabs>
                   <Tab text="Untitled Tab 1">
                      <content>
